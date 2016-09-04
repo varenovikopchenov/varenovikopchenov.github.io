@@ -1,1 +1,342 @@
-Hello World
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8">
+    <title>Варёнов и Копчёнов</title>
+    <meta name="description" content="Производитель колбасы и мясных изделий."/>
+    <link rel="stylesheet" type="text/css"  href="/css/vendor/reset-2.0.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bad+Script|Open+Sans:400,600,800" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css"  href="/css/main.min.css" />
+    <script src="/js/vendor/angular.min.js" defer></script>
+    <script src="/js/main.js" defer></script>
+  </head>
+  <body>
+    <div id="section-1" class="section">
+      <div class="brand">
+        <h1>Варёнов и Копчёнов</h1>
+        <h2>Производитель колбасы и мясных изделий.</h2>
+      </div>
+      <div class="description">
+        <p>
+          <strong>Работаем с 1998 года.</strong>
+        </p>
+        <p>
+          Мы целенаправленно не тратим деньги на рекламу,
+          <br>
+          и это отражается на <strong>цене</strong> нашей продукции.
+        </p>
+        <p>
+          Нас рекламирует наша работа и наши постоянные клиенты.
+        </p>
+        <p>
+          <br>
+        </p>
+        <p>
+          Наша <strong>фишка</strong> – натуральное копчение с добавками можжевельника.
+        </p>
+      </div>
+      <div class="image"></div>
+    </div>
+    <div id="section-2" class="section" ng-app="Categories">
+      <h3>Наш Ассортимент</h3>
+      <h2>Линейка ЦеКа &reg;</h2>
+      <div id="categories" ng-controller="CategoriesController">
+        <!-- Контроллер -->
+        <div id="category-selector">
+          <span
+            ng-repeat="category in filters.categories"
+            ng-click="select($index)"
+            ng-class="{active: $index == selected}"
+          >
+            {{category}}&nbsp;
+          </span>
+        </div>
+        <!-- Вид -->
+        <div id="output">
+          <div ng-repeat="(name, details) in data[filters.categories[selected]]" class="card">
+            <img src="{{details['Фото']}}" />
+            <h4>{{name}}</h4>
+            <h5 ng-if="details['Цена в рублях']">{{details['Цена в рублях']}} ₽</h5>
+            <div ng-if="details['Скидка']" class="ribbon"></div>
+            <h6 ng-if="details['Скидка']">-{{details['Скидка']}}%</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="section-3" class="section">
+      <div id="overlay">
+        <h3>Свяжитесь с нами</h3>
+        <br><br>
+        <h4><strong>По телефону:</strong> +380 (66) 123-45-67</h4>
+        <br><br>
+        <h4><strong>По електронной почте:</strong> продажы@варенов.рф</h4>
+        <br><br>
+        <h4><strong>Мы расположены по адресу:</strong> гр.Донецк, ул. Таллинская 1</h4>
+      </div>
+      <div id="map"></div>
+    </div>
+
+    <script>
+      "use strict";
+
+      var initMap = function initMap() {
+        	var objectCoordinates = {lat: 47.94846, lng: 37.8808187};
+        	var outZoomCenteringCoordinates = {lat: 50.5, lng: 37.8808187};
+        	var inZoomCenteringCoordinates = {lat: 47.95, lng: 37.8808187};
+          var map = new google.maps.Map(document.getElementById('map'), {
+              center: outZoomCenteringCoordinates,
+              zoom: 6,
+            	mapTypeControl: false,
+            	zoomControl: false,
+            	draggable: false,
+            	streetViewControl: false,
+            	scrollwheel: false,
+              styles: [{
+                  "featureType": "all",
+                  "elementType": "all",
+                  "stylers": [{
+                      "saturation": "0"
+                  }]
+              }, {
+                  "featureType": "all",
+                  "elementType": "geometry",
+                  "stylers": [{
+                      "visibility": "simplified"
+                  }]
+              }, {
+                  "featureType": "all",
+                  "elementType": "geometry.fill",
+                  "stylers": [{
+                      "visibility": "simplified"
+                  }]
+              }, {
+                  "featureType": "all",
+                  "elementType": "geometry.stroke",
+                  "stylers": [{
+                      "visibility": "simplified"
+                  }]
+              }, {
+                  "featureType": "all",
+                  "elementType": "labels.text",
+                  "stylers": [{
+                      "visibility": "off"
+                  }]
+              }, {
+                  "featureType": "administrative",
+                  "elementType": "all",
+                  "stylers": [{
+                      "visibility": "simplified"
+                  }, {
+                      "color": "#FFDC00"
+                  }, {
+                      "lightness": "-15"
+                  }, {
+                      "gamma": "1.00"
+                  }]
+              }, {
+                  "featureType": "administrative",
+                  "elementType": "labels.icon",
+                  "stylers": [{
+                      "saturation": "-100"
+                  }, {
+                      "lightness": "20"
+                  }, {
+                      "visibility": "simplified"
+                  }, {
+                      "gamma": ".5"
+                  }]
+              }, {
+                  "featureType": "landscape",
+                  "elementType": "geometry.fill",
+                  "stylers": [{
+                      "lightness": "60"
+                  }, {
+                      "saturation": "0"
+                  }, {
+                      "color": "#FFDC00"
+                  }, {
+                      "visibility": "simplified"
+                  }]
+              }, {
+                  "featureType": "landscape.natural",
+                  "elementType": "all",
+                  "stylers": [{
+                      "visibility": "simplified"
+                  }]
+              }, {
+                  "featureType": "landscape.natural",
+                  "elementType": "geometry.fill",
+                  "stylers": [{
+                      "visibility": "on"
+                  }, {
+                      "color": "#FFDC00"
+                  }, {
+                      "saturation": "0"
+                  }, {
+                      "lightness": "12"
+                  }, {
+                      "gamma": "1.00"
+                  }]
+              }, {
+                  "featureType": "landscape.natural",
+                  "elementType": "labels.text",
+                  "stylers": [{
+                      "lightness": "100"
+                  }]
+              }, {
+                  "featureType": "landscape.natural",
+                  "elementType": "labels.icon",
+                  "stylers": [{
+                      "visibility": "off"
+                  }]
+              }, {
+                  "featureType": "landscape.natural.landcover",
+                  "elementType": "all",
+                  "stylers": [{
+                      "visibility": "off"
+                  }]
+              }, {
+                  "featureType": "landscape.natural.terrain",
+                  "elementType": "all",
+                  "stylers": [{
+                      "visibility": "simplified"
+                  }]
+              }, {
+                  "featureType": "poi",
+                  "elementType": "all",
+                  "stylers": [{
+                      "visibility": "simplified"
+                  }]
+              }, {
+                  "featureType": "poi",
+                  "elementType": "geometry.fill",
+                  "stylers": [{
+                      "color": "#FFDC00"
+                  }, {
+                      "saturation": "0"
+                  }, {
+                      "lightness": "-7"
+                  }, {
+                      "gamma": "1.00"
+                  }]
+              }, {
+                  "featureType": "road",
+                  "elementType": "all",
+                  "stylers": [{
+                      "gamma": "6.14"
+                  }]
+              }, {
+                  "featureType": "road",
+                  "elementType": "geometry.fill",
+                  "stylers": [{
+                      "color": "#FFDC00"
+                  }, {
+                      "saturation": "0"
+                  }, {
+                      "lightness": "-18"
+                  }, {
+                      "gamma": "1.00"
+                  }]
+              }, {
+                  "featureType": "road",
+                  "elementType": "labels.text",
+                  "stylers": [{
+                      "visibility": "simplified"
+                  }, {
+                      "saturation": "0"
+                  }, {
+                      "lightness": "100"
+                  }]
+              }, {
+                  "featureType": "road",
+                  "elementType": "labels.icon",
+                  "stylers": [{
+                      "visibility": "off"
+                  }, {
+                      "invert_lightness": true
+                  }]
+              }, {
+                  "featureType": "transit",
+                  "elementType": "all",
+                  "stylers": [{
+                      "visibility": "simplified"
+                  }, {
+                      "hue": "#FFFF00"
+                  }, {
+                      "saturation": "100"
+                  }, {
+                      "gamma": "0.85"
+                  }, {
+                      "lightness": "17"
+                  }, {
+                      "weight": "1.00"
+                  }]
+              }, {
+                  "featureType": "transit",
+                  "elementType": "labels.icon",
+                  "stylers": [{
+                      "hue": "#FFFF00"
+                  }, {
+                      "saturation": "-100"
+                  }, {
+                      "gamma": "0.5"
+                  }, {
+                      "weight": "1.00"
+                  }]
+              }, {
+                  "featureType": "water",
+                  "elementType": "all",
+                  "stylers": [{
+                      "visibility": "on"
+                  }]
+              }, {
+                  "featureType": "water",
+                  "elementType": "geometry",
+                  "stylers": [{
+                      "lightness": "80"
+                  }]
+              }, {
+                  "featureType": "water",
+                  "elementType": "geometry.fill",
+                  "stylers": [{
+                      "color": "#FFDC00"
+                  }, {
+                      "saturation": "0"
+                  }, {
+                      "lightness": "35"
+                  }, {
+                      "gamma": "1.00"
+                  }]
+              }, {
+                  "featureType": "water",
+                  "elementType": "labels.text",
+                  "stylers": [{
+                      "visibility": "off"
+                  }]
+              }]
+          });
+        	var marker = new google.maps.Marker({
+            position: objectCoordinates,
+            map: map,
+            title: 'Увеличить масштаб',
+            icon: 'data:image/svg+xml;utf8;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pgo8IS0tIEdlbmVyYXRvcjogQWRvYmUgSWxsdXN0cmF0b3IgMTkuMS4wLCBTVkcgRXhwb3J0IFBsdWctSW4gLiBTVkcgVmVyc2lvbjogNi4wMCBCdWlsZCAwKSAgLS0+CjxzdmcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiB4bWxuczp4bGluaz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluayIgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4PSIwcHgiIHk9IjBweCIgdmlld0JveD0iMCAwIDQyOS40MDcgNDI5LjQwNyIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNDI5LjQwNyA0MjkuNDA3OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgd2lkdGg9IjY0cHgiIGhlaWdodD0iNjRweCI+CjxnPgoJPHBhdGggZD0iTTM0Ni4yMDQsMTk1Ljk1MWMtMTQuMDgzLDAtMjUuNSwxMS40MTctMjUuNSwyNS41aC0xMHYtMjcuNDc0YzAtMTQuMDgzLTExLjQxNy0yNS41LTI1LjUtMjUuNXMtMjUuNSwxMS40MTctMjUuNSwyNS41ICAgdjI3LjQ3NGgtMTB2LTUyLjU2N2MwLTE0LjA4My0xMS40MTctMjUuNS0yNS41LTI1LjVzLTI1LjUsMTEuNDE3LTI1LjUsMjUuNXY1Mi41NjdoLTEwVjEwNS41YzAtMTQuMDgzLTExLjQxNy0yNS41LTI1LjUtMjUuNSAgIHMtMjUuNSwxMS40MTctMjUuNSwyNS41djE4OC43OThoLTEwdi02MS41NzFjMC0xNC4wODMtMTEuNDE3LTI1LjUtMjUuNS0yNS41cy0yNS41LDExLjQxNy0yNS41LDI1LjV2OTMuODUxICAgYzAsNTYuNyw0Ni4xMjksMTAyLjgyOSwxMDIuODI5LDEwMi44MjloODkuMzQzYzU2LjY5OSwwLDEwMi44MjgtNDYuMTI5LDEwMi44MjgtMTAyLjgyOVYyMjEuNDUxICAgQzM3MS43MDQsMjA3LjM2OCwzNjAuMjg3LDE5NS45NTEsMzQ2LjIwNCwxOTUuOTUxeiIgZmlsbD0iIzAwMDAwMCIvPgoJPHBhdGggZD0iTTU3LjcwNCw5MC41aDUwdjMwaC01MFY5MC41eiIgZmlsbD0iIzAwMDAwMCIvPgoJPHBhdGggZD0iTTk5LjIxLDIwLjI5M2wzNS4zNTQsMzUuMzU0TDExMy4zNTEsNzYuODZMNzcuOTk3LDQxLjUwNkw5OS4yMSwyMC4yOTN6IiBmaWxsPSIjMDAwMDAwIi8+Cgk8cGF0aCBkPSJNMTQ4LjIwNCwwaDMwdjUwaC0zMFYweiIgZmlsbD0iIzAwMDAwMCIvPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+CjxnPgo8L2c+Cjwvc3ZnPgo='
+          });
+        	marker.setAnimation(google.maps.Animation.BOUNCE);
+        	marker.addListener('click', function() {
+            marker.setIcon();
+            marker.setAnimation(google.maps.Animation.DROP);
+            map.setZoom(16);
+            map.setCenter(inZoomCenteringCoordinates);
+            map.setMapTypeId('hybrid');
+            map.setOptions({
+              mapTypeControl: true,
+              zoomControl: true,
+              draggable: true
+            });
+          });
+      };
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=initMap" type="text/javascript" async defer></script>
+  </body>
+</html>
