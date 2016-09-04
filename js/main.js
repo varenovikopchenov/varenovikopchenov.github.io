@@ -3,14 +3,14 @@
 // Массив данных
 var data = {
   "Варёные": {
-    "Пример: Докторская": {
-      "Фото": "http://newsprom.ru/i/n/693/209693/tn_209693_1253a27436a5.jpg",
+    "Пример": {
+      "Фото": "http://placehold.it/150x150",
       "Цена в рублях": 600.00
     }
   },
   "Варёно-копчёные": {
-    "Пример: Краковская": {
-      "Фото": "http://www.calorizator.ru/sites/default/files/imagecache/product_512/product/sausage-25.jpg",
+    "Пример": {
+      "Фото": "http://placehold.it/200x150",
       "Цена в рублях": 299.99,
       "Скидка": 5
     }
